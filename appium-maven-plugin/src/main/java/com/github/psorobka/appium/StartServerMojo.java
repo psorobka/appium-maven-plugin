@@ -22,6 +22,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.Os;
 
 /**
  *
@@ -44,7 +45,12 @@ public class StartServerMojo extends AbstractMojo {
         try {
             getLog().debug("execute start");
             ProcessBuilder processBuilder = new ProcessBuilder();
-            final String appiumBin = appiumHome.getAbsolutePath() + File.separator + "appium.cmd";
+            final String appiumBin;
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                appiumBin = appiumHome.getAbsolutePath() + File.separator + "appium.cmd";
+            } else {
+                appiumBin = appiumHome.getAbsolutePath() + File.separator + "appium";
+            }
             getLog().debug("appium binary: " + appiumBin);
             processBuilder.command(appiumBin, "--log-timestamp");
             processBuilder.redirectError(new File(target, "appiumErrorLog.txt"));
