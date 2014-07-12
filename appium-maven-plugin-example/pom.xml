@@ -123,7 +123,7 @@ limitations under the License.
                             </execution>
                         </executions>
                         <configuration>
-                            <emulatorWait>180000</emulatorWait>
+                            <emulatorWait>400000</emulatorWait>
                             <emulatorOptions>-no-skin -no-audio -no-window</emulatorOptions>
                         </configuration>
                     </plugin>
