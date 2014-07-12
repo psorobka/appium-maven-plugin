@@ -6,7 +6,7 @@ env:
 
 android:
   components:
-    - build-tools-19.0.0
+    - build-tools-23.0.2
 
 before_script:
   - echo no | android create avd --force -n Default -t $ANDROID_TARGET --abi $ANDROID_ABI
