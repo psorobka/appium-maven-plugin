@@ -1,69 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright © 2014 Piotr Soróbka <psorobka@gmail.com>.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>appium-maven-plugin-example</artifactId>
+    <packaging>apk</packaging>
 
     <name>Appium Maven Plugin Example 1.0</name>
-    
+
     <parent>
         <groupId>com.github.psorobka</groupId>
         <artifactId>appium-maven-plugin-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    
+
+    <properties>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <!-- Do not deploy this artifact -->
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <!--<appium.home>C:/Users/piotr.sorobka.L/AppData/Roaming/npm/</appium.home>-->
+        <appium.home>${project.build.directory}/node/npm/node_modules/.bin</appium.home>
+        <file.encoding>UTF-8</file.encoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
+        <!-- Just for the sake of IntelliJ Idea -->
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <executions>                  
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <nodeVersion>v0.10.18</nodeVersion>
-                            <npmVersion>1.3.8</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <arguments>install --prefix node${file.separator}npm appium</arguments>
-                        </configuration>
-                    </execution>                    
-                </executions>
-                <configuration>
-                    <workingDirectory>target</workingDirectory>
-                </configuration>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <extensions>true</extensions>
             </plugin>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>appium-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>start Appium</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop Appium</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>       
-            </plugin>            
         </plugins>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>appium-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <artifactId>android-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start emulator, deploy apk and run default activity</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>emulator-start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>undeploy apk and stop emulator</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>emulator-stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <emulatorWait>180000</emulatorWait>
+                            <emulatorOptions>-no-skin -no-audio -no-window</emulatorOptions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

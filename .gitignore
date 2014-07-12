@@ -14,3 +14,10 @@ hs_err_pid*
 /appium-maven-plugin-test/target/
 /appium-maven-plugin-example/target/
 /appium-maven-plugin/target/
+/appium-maven-plugin/src/it/basic/target/
+/appium-maven-plugin-example/appium-maven-plugin-example.iml
+/appium-maven-plugin/appium-maven-plugin.iml
+/appium-maven-plugin-parent.iml
+/.idea
+/appium-maven-plugin-example/gen
+/appium-maven-plugin-example/.idea

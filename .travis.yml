@@ -1,5 +1,15 @@
-language: java
-jdk:
-  - oraclejdk7
-  - openjdk7
-script: mvn clean verify
+language: android
+jdk: oraclejdk7
+env:
+  matrix:
+    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+
+android:
+  components:
+    - build-tools-19.0.0
+
+before_script:
+  - echo no | android create avd --force -n Default -t $ANDROID_TARGET --abi $ANDROID_ABI
+
+script: mvn clean install -Pintegration-test
+
