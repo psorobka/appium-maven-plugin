@@ -49,6 +49,8 @@ public abstract class AbstractAppiumIT extends AbstractIT {
 
     @After
     public void tearDown() throws Exception {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
