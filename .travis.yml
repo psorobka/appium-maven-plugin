@@ -2,14 +2,17 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-19 ANDROID_ABI=x86
 
 android:
   components:
     - build-tools-23.0.2
 
 before_script:
+  - which android
   - echo no | android create avd --force -n Default -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - android list targets
+  - android list devices
 
 script: mvn clean install -Pintegration-test
 
