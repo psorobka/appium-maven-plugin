@@ -2,17 +2,17 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=x86
+    - ANDROID_TARGET=android-19 ANDROID_ABI=x86 AVD_NAME=Default
 
 android:
   components:
     - build-tools-23.0.2
 
 before_script:
-  - which android
-  - echo no | android create avd --force -n Default -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - android list targets
-  - android list devices
-
-script: mvn clean install -Pintegration-test
+  - echo no | android create avd --force -n $AVD_NAME -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd $AVD_NAME -no-skin -no-audio -no-window &
+  - adb wait-for-device
+  - adb shell input keyevent 82 &
+  
+script: mvn clean install -Ptravis
 

@@ -77,11 +77,32 @@ limitations under the License.
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>         
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
         <profile>
             <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>      
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -94,14 +115,6 @@ limitations under the License.
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -127,6 +140,30 @@ limitations under the License.
                             <emulatorOptions>-no-skin -no-audio -no-window</emulatorOptions>
                         </configuration>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>travis</id>
+            <activation>
+                <property>
+                    <name>travis</name>
+                    <value>true</value>
+                </property>      
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>appium-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>                   
                 </plugins>
             </build>
         </profile>
