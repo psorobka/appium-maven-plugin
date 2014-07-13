@@ -2,7 +2,7 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=x86 AVD_NAME=Default
+    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a AVD_NAME=Default
 
 android:
   components:
