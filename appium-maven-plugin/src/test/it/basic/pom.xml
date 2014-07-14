@@ -26,22 +26,28 @@ limitations under the License.
         <groupId>com.github.psorobka</groupId>
         <artifactId>appium-maven-plugin-parent</artifactId>
         <version>@project.version@</version>
-    </parent>
-    
-    <properties>
-        <appium.home>${project.build.directory}/node/npm/node_modules/.bin</appium.home>
-    </properties>
+    </parent>    
     
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>               
-            </plugin>
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>appium-maven-plugin</artifactId>
             </plugin>            
         </plugins>
     </build>
+    
+    <profiles>
+        <profile>
+            <id>install-npm-and-appium</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

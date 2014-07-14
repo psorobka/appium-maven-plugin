@@ -33,8 +33,6 @@ limitations under the License.
         <maven.compiler.target>1.6</maven.compiler.target>
         <!-- Do not deploy this artifact -->
         <maven.deploy.skip>true</maven.deploy.skip>
-        <!--<appium.home>C:/Users/piotr.sorobka.L/AppData/Roaming/npm/</appium.home>-->
-        <appium.home>${project.build.directory}/node/npm/node_modules/.bin</appium.home>
         <file.encoding>UTF-8</file.encoding>
     </properties>
 
@@ -96,19 +94,26 @@ limitations under the License.
 
     <profiles>
         <profile>
-            <id>integration-test</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>      
-            </activation>
+            <id>install-npm-and-appium</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>                      
+            </activation>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>appium-maven-plugin</artifactId>
@@ -153,10 +158,6 @@ limitations under the License.
             </activation>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
                     <plugin>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>appium-maven-plugin</artifactId>

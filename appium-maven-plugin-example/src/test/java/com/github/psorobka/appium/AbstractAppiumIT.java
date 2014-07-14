@@ -44,6 +44,7 @@ public abstract class AbstractAppiumIT extends AbstractIT {
         capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("appPackage", "com.github.psorobka.appium");
         capabilities.setCapability("appActivity", ".AppiumExampleActivity");
+        capabilities.setCapability("deviceReadyTimeout", "180");
         driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
 

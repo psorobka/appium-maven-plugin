@@ -36,7 +36,7 @@ public class StartServerMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project.build.directory}", readonly = true, required = true)
     private File target;
-    @Parameter(property = "appium.home", required = true)
+    @Parameter(property = "appium.home", required = true, defaultValue = "${user.home}/node_modules/.bin")
     private File appiumHome;
     @Parameter(defaultValue = "${session}", readonly = true, required = true)
     private MavenSession session;

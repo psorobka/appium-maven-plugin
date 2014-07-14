@@ -9,6 +9,11 @@ android:
     - build-tools-23.0.2
 
 before_script:
+  - apt-get install -y python-software-properties python g++ make
+  - add-apt-repository -y ppa:chris-lea/node.js
+  - apt-get update
+  - apt-get install nodejs npm
+  - npm install appium
   - echo no | android create avd --force -n $AVD_NAME -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd $AVD_NAME -no-skin -no-audio -no-window &
   - adb wait-for-device
