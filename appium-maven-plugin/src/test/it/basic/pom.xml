@@ -25,7 +25,7 @@ limitations under the License.
     <parent>
         <groupId>com.github.psorobka</groupId>
         <artifactId>appium-maven-plugin-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>@project.version@</version>
     </parent>
     
     <properties>
