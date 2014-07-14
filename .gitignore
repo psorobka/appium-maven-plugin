@@ -21,3 +21,4 @@ hs_err_pid*
 /.idea
 /appium-maven-plugin-example/gen
 /appium-maven-plugin-example/.idea
+/appium-maven-plugin/src/test/it/basic/target/
