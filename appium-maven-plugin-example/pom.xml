@@ -94,15 +94,10 @@ limitations under the License.
 
     <profiles>
         <profile>
-            <id>install-npm-and-appium</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
+            <id>use-installed-appium</id>
+            <properties>
+                <appium.home>../node/npm/node_modules/.bin</appium.home>
+            </properties>
         </profile>
         <profile>
             <id>integration-test</id>
@@ -120,7 +115,20 @@ limitations under the License.
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                    </plugin>
+                    </plugin>                    
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>start-and-stop-emulator</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>      
+            </activation>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
@@ -144,27 +152,7 @@ limitations under the License.
                             <emulatorWait>400000</emulatorWait>
                             <emulatorOptions>-no-skin -no-audio -no-window</emulatorOptions>
                         </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>travis</id>
-            <activation>
-                <property>
-                    <name>travis</name>
-                    <value>true</value>
-                </property>      
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>appium-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                    </plugin>                   
+                    </plugin>                
                 </plugins>
             </build>
         </profile>

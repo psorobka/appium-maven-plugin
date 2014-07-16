@@ -112,21 +112,5 @@ limitations under the License.
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>travis</id>
-            <activation>
-                <property>
-                    <name>travis</name>
-                    <value>true</value>
-                </property>      
-            </activation>            
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-invoker-plugin</artifactId>                       
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>        
     </profiles>
 </project>

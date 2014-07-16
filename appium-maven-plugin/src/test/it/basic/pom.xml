@@ -33,21 +33,16 @@ limitations under the License.
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>appium-maven-plugin</artifactId>
-            </plugin>            
+            </plugin>  
         </plugins>
     </build>
     
     <profiles>
         <profile>
-            <id>install-npm-and-appium</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
+            <id>use-installed-appium</id>
+            <properties>
+                <appium.home>../../../../node/npm/node_modules/.bin</appium.home>
+            </properties>
         </profile>
     </profiles>
 </project>

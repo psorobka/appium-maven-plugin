@@ -4,20 +4,11 @@ env:
   matrix:
     - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a AVD_NAME=Default
 
-android:
-  components:
-    - build-tools-23.0.2
-
 before_script:
-  - sudo apt-get install -y python-software-properties python g++ make
-  - sudo add-apt-repository -y ppa:chris-lea/node.js
-  - sudo apt-get update
-  - sudo apt-get install nodejs npm
-  - npm install appium
   - echo no | android create avd --force -n $AVD_NAME -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd $AVD_NAME -no-skin -no-audio -no-window &
   - adb wait-for-device
   - adb shell input keyevent 82 &
   
-script: mvn clean install -Ptravis
+script: mvn clean install -Pinstall-appium,use-installed-appium,start-and-stop-emulator,integration-test
 
