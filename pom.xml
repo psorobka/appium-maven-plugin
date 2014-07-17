@@ -19,7 +19,7 @@ limitations under the License.
     <artifactId>appium-maven-plugin-parent</artifactId>
     <groupId>com.github.psorobka</groupId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Appium Maven Plugin Parent 1.0</name>
     <description>
@@ -29,6 +29,12 @@ limitations under the License.
         and real devices (iOS, Android, FirefoxOS).
     </description>
     <url>https://github.com/psorobka/appium-maven-plugin</url>
+    
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
     
     <modules>
         <module>appium-maven-plugin</module>
@@ -112,7 +118,15 @@ limitations under the License.
                 </plugin>                
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>2.17</version>                    
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-plugin-plugin</artifactId>
@@ -140,10 +154,6 @@ limitations under the License.
                     <version>3.9.0-rc.2</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.5</version>
-                </plugin>
-                <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.1</version>
                 </plugin>
@@ -163,31 +173,9 @@ limitations under the License.
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>0.0.15</version>
-                </plugin>              
+                </plugin>                          
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <goals>deploy</goals>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>        
 
     <ciManagement>
@@ -216,55 +204,33 @@ limitations under the License.
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/psorobka/appium-maven-plugin/issues</url>
-    </issueManagement>
-    
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+    </issueManagement>    
 
     <profiles>
         <profile>
-            <id>sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
+            <id>sonatype-oss-release</id>
             <build>
                 <plugins>
                     <plugin>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>                            
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <version>1.5</version>                    
                         <configuration>
                             <keyname>psorobka</keyname>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
                     </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
             <id>install-appium</id>
-            <activation>
-                <property>
-                    <name>installAppium</name>
-                    <value>true</value>
-                </property>                      
-            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -304,6 +270,6 @@ limitations under the License.
         <developerConnection>scm:git:git@github.com:psorobka/appium-maven-plugin.git</developerConnection>
         <connection>scm:git:git@github.com:psorobka/appium-maven-plugin.git</connection>
         <url>https://github.com/psorobka/appium-maven-plugin</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>
