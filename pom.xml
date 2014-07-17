@@ -14,33 +14,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>appium-maven-plugin-parent</artifactId>
     <groupId>com.github.psorobka</groupId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Appium Maven Plugin Parent 1.0</name>
     <description>
         Appium Maven Plugin provides start and stop methods for Appium -
-        open source, cross-platform test automation tool for native, hybrid and 
+        open source, cross-platform test automation tool for native, hybrid and
         mobile web apps, tested on simulators (iOS, FirefoxOS), emulators (Android),
         and real devices (iOS, Android, FirefoxOS).
     </description>
     <url>https://github.com/psorobka/appium-maven-plugin</url>
-    
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
-    
+
     <modules>
         <module>appium-maven-plugin</module>
         <module>appium-maven-plugin-example</module>
     </modules>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -48,7 +43,7 @@ limitations under the License.
         <appium.version>1.1.0</appium.version>
     </properties>
 
-    <dependencyManagement>       
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
@@ -91,9 +86,9 @@ limitations under the License.
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <build>       
-        <pluginManagement>           
+
+    <build>
+        <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>${project.groupId}</groupId>
@@ -115,10 +110,10 @@ limitations under the License.
                             </goals>
                         </execution>
                     </executions>
-                </plugin>                
+                </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.17</version>                    
+                    <version>2.17</version>
                     <executions>
                         <execution>
                             <goals>
@@ -160,29 +155,82 @@ limitations under the License.
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>2.2.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.9.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <keyname>psorobka</keyname>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-invoker-plugin</artifactId>
                     <version>1.9</version>
-                </plugin>  
+                </plugin>
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>0.0.15</version>
-                </plugin>                          
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <releaseProfiles>sonatype-oss-release</releaseProfiles>
+                        <goals>deploy</goals>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.2</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
-    </build>        
+    </build>
 
     <ciManagement>
         <system>Travis CI</system>
         <url>https://travis-ci.org/psorobka/appium-maven-plugin</url>
     </ciManagement>
-    
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -190,7 +238,7 @@ limitations under the License.
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
+
     <developers>
         <developer>
             <id>psorobka</id>
@@ -204,7 +252,18 @@ limitations under the License.
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/psorobka/appium-maven-plugin/issues</url>
-    </issueManagement>    
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <profiles>
         <profile>
@@ -212,19 +271,17 @@ limitations under the License.
             <build>
                 <plugins>
                     <plugin>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>                    
-                        <configuration>
-                            <keyname>psorobka</keyname>
-                        </configuration>
-                    </plugin>
-                    <plugin>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
                     </plugin>
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
@@ -237,7 +294,7 @@ limitations under the License.
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
                         <inherited>false</inherited>
-                        <executions>                  
+                        <executions>
                             <execution>
                                 <id>install node and npm</id>
                                 <goals>
@@ -256,9 +313,10 @@ limitations under the License.
                                 </goals>
                                 <phase>pre-integration-test</phase>
                                 <configuration>
-                                    <arguments>install --prefix node${file.separator}npm appium@${appium.version}</arguments>
+                                    <arguments>install --prefix node${file.separator}npm appium@${appium.version}
+                                    </arguments>
                                 </configuration>
-                            </execution>                    
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
