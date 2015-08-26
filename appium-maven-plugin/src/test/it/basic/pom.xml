@@ -35,19 +35,5 @@ limitations under the License.
                 <artifactId>appium-maven-plugin</artifactId>
             </plugin>  
         </plugins>
-    </build>
-    
-    <profiles>
-        <profile>
-            <id>use-installed-appium</id>
-            <activation>
-                <property>
-                    <name>full-integration-test</name>
-                </property>
-            </activation>
-            <properties>
-                <appium.home>../../../../node/npm</appium.home>
-            </properties>
-        </profile>
-    </profiles>
+    </build>   
 </project>
