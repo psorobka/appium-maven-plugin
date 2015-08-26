@@ -40,6 +40,11 @@ limitations under the License.
     <profiles>
         <profile>
             <id>use-installed-appium</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>
+            </activation>
             <properties>
                 <appium.home>../../../../node/npm</appium.home>
             </properties>
