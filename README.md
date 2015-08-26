@@ -12,17 +12,18 @@ Features
  - Automatic download of Appium, using frontend-maven-plugin
  - Fully functional example: Maven Android application, with Appium integration tests running on Android emulator.
  - Support for Appium 1.4.10
+
 **Build status**
 
 [![Build Status](https://travis-ci.org/psorobka/appium-maven-plugin.svg?branch=master)](https://travis-ci.org/psorobka/appium-maven-plugin)
 
 **Project status**
 
-[![Still Maintained](http://stillmaintained.com/psorobka/appium-maven-plugin.png)](http://stillmaintained.com/psorobka/appium-maven-plugi)[![Backlog](https://badge.waffle.io/psorobka/appium-maven-plugin.png?label=backlog&title=Backlog)](https://waffle.io/psorobka/appium-maven-plugin)
-[![Backlog](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?title=Backlog)](http://waffle.io/psorobka/appium-maven-plugin)
+[![Still Maintained](http://stillmaintained.com/psorobka/appium-maven-plugin.png)](http://stillmaintained.com/psorobka/appium-maven-plugi)
+[![Backlog](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?label=backlog&title=Backlog)](http://waffle.io/psorobka/appium-maven-plugin)
 [![Ready](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?label=ready&title=Ready)](http://waffle.io/psorobka/appium-maven-plugin)
 [![In progress](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?label=in_progress&title=In%20Progress)](http://waffle.io/psorobka/appium-maven-plugin)
-[![Done](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?label=in_progress&title=In%20Progress)](http://waffle.io/psorobka/appium-maven-plugin)
+[![Done](https://badge.waffle.io/psorobka/appium-maven-plugin.svg?label=done&title=Done)](http://waffle.io/psorobka/appium-maven-plugin)
 
 **Release status**
 
