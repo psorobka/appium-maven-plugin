@@ -17,13 +17,15 @@ package com.github.psorobka.appium;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.maven.execution.MavenSession;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.Os;
+import org.zeroturnaround.process.PidUtil;
+import org.zeroturnaround.process.Processes;
 
 /**
  *
@@ -32,14 +34,10 @@ import org.codehaus.plexus.util.Os;
 @Mojo(name = "start", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class StartServerMojo extends AbstractMojo {
 
-    public static final String PROCESS_PROPERTY_NAME = "appiumProcess";
-
     @Parameter(defaultValue = "${project.build.directory}", readonly = true, required = true)
     private File target;
     @Parameter(property = "appium.home", required = true, defaultValue = "${user.home}/node_modules/.bin")
     private File appiumHome;
-    @Parameter(defaultValue = "${session}", readonly = true, required = true)
-    private MavenSession session;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -61,15 +59,22 @@ public class StartServerMojo extends AbstractMojo {
             if (!appiumBinFile.canExecute()) {
                 throw new MojoExecutionException("Appium binary is not executable: " + appiumBin);
             }
-            processBuilder.command(appiumBin, "--log-timestamp");
-//            processBuilder.redirectError(new File(target, "appiumErrorLog.txt"));
-//            processBuilder.redirectOutput(new File(target, "appiumOutputLog.txt"));
-            Process startProcess = processBuilder.start();
+            processBuilder.command(appiumBin, "--log-timestamp", "--log", new File(target, "appiumLog.txt").getAbsolutePath());
+            processBuilder.redirectError(new File(target, "appiumErrorLog.txt"));
+            processBuilder.redirectOutput(new File(target, "appiumOutputLog.txt"));
+            getLog().debug("Appium server commands " + processBuilder.command());
+            Process process = processBuilder.start();
+            if (!Processes.newPidProcess(process).isAlive()) {
+                throw new MojoExecutionException("Failed to start Appium server");
+            }
+            int pid = PidUtil.getPid(process);
             getLog().info("Appium server started");
-            session.getExecutionProperties().put(PROCESS_PROPERTY_NAME, startProcess);
-        } catch (IOException ex) {
-            getLog().error("Error while executing start goal", ex);
-            throw new MojoExecutionException("Error while executing start goal", ex);
+            getLog().debug("Appium server PID " + pid);
+            FileUtils.writeStringToFile(new File(target, "appium.pid"), Integer.toString(pid));
+            //Dumb way to sleep until appium starts - file watcher would be better
+            Thread.sleep(5000);
+        } catch (IOException | InterruptedException ex) {
+            throw new MojoExecutionException("Failed to start Appium server", ex);
         }
     }
 }

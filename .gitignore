@@ -24,3 +24,5 @@ hs_err_pid*
 /appium-maven-plugin/src/test/it/basic/target/
 /node
 /nb-configuration.xml
+appium-maven-plugin/node/
+appium-maven-plugin-example/nb-configuration.xml

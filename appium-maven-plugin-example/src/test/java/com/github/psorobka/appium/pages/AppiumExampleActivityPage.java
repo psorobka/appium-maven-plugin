@@ -15,8 +15,8 @@
  */
 package com.github.psorobka.appium.pages;
 
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -27,7 +27,7 @@ public class AppiumExampleActivityPage extends AbstractPage {
     public static final String NAME_ID = "com.github.psorobka.appium:id/name";
     public static final String BUTTON_ID = "com.github.psorobka.appium:id/button";
 
-    public AppiumExampleActivityPage(WebDriver driver) {
+    public AppiumExampleActivityPage(AndroidDriver driver) {
         super(driver);
         waitUntilElementIsPresent(NAME_ID);
     }
@@ -49,16 +49,16 @@ public class AppiumExampleActivityPage extends AbstractPage {
         public static final String SAY_HELLO_ID = "android:id/message";
         public static final String OK_BUTTON_ID = "android:id/button1";
 
-        public SayHelloDialog(WebDriver driver) {
+        public SayHelloDialog(AndroidDriver driver) {
             super(driver);
             waitUntilElementIsPresent(SAY_HELLO_ID);
-        }                
+        }
 
         public String getSayHello() {
             WebElement element = driver.findElement(By.id(SAY_HELLO_ID));
             return element.getText();
         }
-        
+
         public AppiumExampleActivityPage clickOkButton() {
             WebElement element = driver.findElement(By.id(OK_BUTTON_ID));
             element.click();

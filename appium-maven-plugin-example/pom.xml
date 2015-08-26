@@ -30,18 +30,17 @@ limitations under the License.
     <properties>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
-        <file.encoding>UTF-8</file.encoding>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <scope>provided</scope>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -50,16 +49,16 @@ limitations under the License.
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <scope>test</scope>
+            <groupId>org.robolectric</groupId>
+            <artifactId>android-all</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
                 <extensions>true</extensions>
             </plugin>
@@ -70,46 +69,73 @@ limitations under the License.
                 <filtering>true</filtering>
             </testResource>
         </testResources>
-    </build>
+    </build>   
 
     <profiles>
         <profile>
             <id>use-installed-appium</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>
+            </activation>
             <properties>
-                <appium.home>../node/npm/node_modules/.bin</appium.home>
+                <appium.home>../node/npm</appium.home>
             </properties>
         </profile>
         <profile>
-            <id>integration-test</id>
+            <id>start-and-stop-appium</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>            
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>appium-maven-plugin</artifactId>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>            
+            </activation>
+            <build>
+                <plugins>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                    </plugin>                    
+                    </plugin>  
                 </plugins>
             </build>
         </profile>
         <profile>
             <id>start-and-stop-emulator</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>            
+            </activation>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <groupId>com.simpligility.maven.plugins</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>start emulator, deploy apk and run default activity</id>
+                                <id>start emulator</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>emulator-start</goal>
                                 </goals>
                             </execution>
                             <execution>
-                                <id>undeploy apk and stop emulator</id>
+                                <id>stop emulator</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>emulator-stop</goal>
@@ -117,6 +143,7 @@ limitations under the License.
                             </execution>
                         </executions>
                         <configuration>
+                            <emulatorAvd>Default</emulatorAvd>
                             <emulatorWait>400000</emulatorWait>
                             <emulatorOptions>-no-skin -no-audio -no-window</emulatorOptions>
                         </configuration>

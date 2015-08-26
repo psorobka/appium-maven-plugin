@@ -15,14 +15,21 @@
  */
 package com.github.psorobka.appium;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import org.apache.maven.execution.MavenSession;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.Os;
+import org.zeroturnaround.process.PidProcess;
+import org.zeroturnaround.process.ProcessUtil;
+import org.zeroturnaround.process.Processes;
+import org.zeroturnaround.process.WindowsProcess;
 
 /**
  *
@@ -31,31 +38,33 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "stop", defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST)
 public class StopServerMojo extends AbstractMojo {
 
-    private static final char CTRL_C = (char) 3;
-
-    @Parameter(defaultValue = "${session}", readonly = true, required = true)
-    private MavenSession session;
+    @Parameter(defaultValue = "${project.build.directory}", readonly = true, required = true)
+    private File target;
 
     @Override
     public void execute() throws MojoExecutionException {
-        OutputStream os = null;
         try {
             getLog().info("Stopping Appium server...");
-            Process process = (Process) session.getExecutionProperties().get(StartServerMojo.PROCESS_PROPERTY_NAME);
-            os = process.getOutputStream();
-            os.write(CTRL_C);
-            os.flush();
-            process.destroy();
-            getLog().info("Appium server stopped");
-        } catch (IOException ex) {
-            throw new MojoExecutionException("Error while sending Ctrl-C to process", ex);
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException ex) {
-                }
+            int pid = Integer.parseInt(FileUtils.readFileToString(new File(target, "appium.pid")));
+            getLog().debug("Appium server PID " + pid);
+            PidProcess process;
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                WindowsProcess windowsProcess = (WindowsProcess) Processes.newPidProcess(pid);
+                windowsProcess.setIncludeChildren(true);
+                process = windowsProcess;
+            } else {
+                process = Processes.newPidProcess(pid);
             }
+            if (!process.isAlive()) {
+                throw new MojoExecutionException("Appium server is not running");
+            }
+            ProcessUtil.destroyGracefullyOrForcefullyAndWait(process, 30, TimeUnit.SECONDS, 10, TimeUnit.SECONDS);
+            if (process.isAlive()) {
+                throw new MojoExecutionException("Failed to stop Appium server");
+            }
+            getLog().info("Appium server stopped");
+        } catch (InterruptedException | TimeoutException | IOException ex) {
+            throw new MojoExecutionException("Failed to stop Appium server", ex);
         }
     }
 }

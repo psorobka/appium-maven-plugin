@@ -37,7 +37,8 @@ public class AppiumExampleActivity extends Activity {
 
     public void onClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.hello, nameEditText.getText())).setPositiveButton(R.string.ok, null);
+        builder.setMessage(getString(R.string.hello, nameEditText.getText()))
+                .setPositiveButton(R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

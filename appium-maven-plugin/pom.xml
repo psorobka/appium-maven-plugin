@@ -40,6 +40,10 @@ limitations under the License.
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-process</artifactId>
+        </dependency>
     </dependencies>
     
     <build>       
@@ -97,6 +101,11 @@ limitations under the License.
     <profiles>
         <profile>
             <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>full-integration-test</name>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>

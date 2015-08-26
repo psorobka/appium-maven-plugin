@@ -1,14 +1,23 @@
+sudo: false
+cache:
+  directories:
+  - $HOME/.m2
 language: android
-jdk: oraclejdk7
+jdk: oraclejdk8
+android:
+  components:
+    - android-23
+    - build-tools-23.0.0
+    - sys-img-armeabi-v7a-android-23
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-5be876d5
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a AVD_NAME=Default
+    - ANDROID_TARGET=android-23 ANDROID_ABI=armeabi-v7a AVD_NAME=Default
 
 before_script:
   - echo no | android create avd --force -n $AVD_NAME -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd $AVD_NAME -no-skin -no-audio -no-window &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &
   
-script: mvn clean install -Pinstall-appium,use-installed-appium,start-and-stop-emulator,integration-test
+script: mvn clean install -Dfull-integration-test=true -X
 

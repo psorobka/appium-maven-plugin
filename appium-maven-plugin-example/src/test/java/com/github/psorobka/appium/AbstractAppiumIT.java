@@ -15,37 +15,39 @@
  */
 package com.github.psorobka.appium;
 
+import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Before;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.net.URL;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Piotr Soróbka <psorobka@gmail.com>
  */
 public abstract class AbstractAppiumIT extends AbstractIT {
 
-    protected WebDriver driver;
+    protected AndroidDriver<WebElement> driver;
     protected final File app;
 
     public AbstractAppiumIT() {
-        app = new File(projectBuildDirectory + File.separator + projectBuildFinalName + ".apk");
+        app = new File(projectBuildDirectory + File.separator
+                + projectBuildFinalName + ".apk");
     }
 
     @Before
     public void setUp() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("device", "Android");
-//        capabilities.setCapability(CapabilityType.VERSION, "4.4.2");
+        capabilities.setCapability("deviceName", "Android Emulator");
+        capabilities.setCapability("platformVersion", "4.4");
         capabilities.setCapability("app", app.getAbsolutePath());
+        capabilities.setCapability("noSign", true);
         capabilities.setCapability("appPackage", "com.github.psorobka.appium");
         capabilities.setCapability("appActivity", ".AppiumExampleActivity");
         capabilities.setCapability("deviceReadyTimeout", "180");
-        driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
 
     @After

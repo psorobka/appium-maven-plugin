@@ -29,14 +29,15 @@ public class AppiumExampleActivityIT extends AbstractAppiumIT {
 
     @Test
     public void testEnterNameAndClickButton() {
-        //given
+        // given
         String name = "Piotr";
         AppiumExampleActivityPage page = new AppiumExampleActivityPage(driver);
         page.setName(name);
-        AppiumExampleActivityPage.SayHelloDialog sayHelloDialog = page.clickSayHelloButton();
-        //when
+        AppiumExampleActivityPage.SayHelloDialog sayHelloDialog = page
+                .clickSayHelloButton();
+        // when
         String sayHello = sayHelloDialog.getSayHello();
-        //then
+        // then
         assertThat(sayHello, is(equalTo("Hello " + name + "!")));
         sayHelloDialog.clickOkButton();
     }

@@ -15,8 +15,8 @@
  */
 package com.github.psorobka.appium.pages;
 
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,26 +28,30 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
  */
 public class AbstractPage {
 
-    protected final WebDriver driver;
+    protected final AndroidDriver driver;
 
-    public AbstractPage(WebDriver driver) {
+    public AbstractPage(AndroidDriver driver) {
         this.driver = driver;
     }
 
     public void waitUntilElementIsPresent(String elementId) {
-        (new WebDriverWait(driver, 10)).until(presenceOfElementLocated(By.id(elementId)));
+        (new WebDriverWait(driver, 10)).until(presenceOfElementLocated(By
+                .id(elementId)));
     }
 
     public void waitUntilElementIsPresent(String elementId, int timeOutInSeconds) {
-        (new WebDriverWait(driver, timeOutInSeconds)).until(presenceOfElementLocated(By.id(elementId)));
+        (new WebDriverWait(driver, timeOutInSeconds))
+                .until(presenceOfElementLocated(By.id(elementId)));
     }
 
     public void waitUntilElementIsNotPresent(String elementId) {
         waitUntilElementIsNotPresent(elementId, 10);
     }
 
-    public void waitUntilElementIsNotPresent(String elementId, int timeOutInSeconds) {
-        (new WebDriverWait(driver, timeOutInSeconds)).until(not(presenceOfElementLocated(By.id(elementId))));
+    public void waitUntilElementIsNotPresent(String elementId,
+            int timeOutInSeconds) {
+        (new WebDriverWait(driver, timeOutInSeconds))
+                .until(not(presenceOfElementLocated(By.id(elementId))));
     }
 
     public WebElement getActionBarTitleTextView() {

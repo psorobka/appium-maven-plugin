@@ -31,13 +31,16 @@ public abstract class AbstractIT {
     public AbstractIT() {
         InputStream inputStream = null;
         try {
-            inputStream = AbstractIT.class.getResourceAsStream("/it.properties");
+            inputStream = AbstractIT.class
+                    .getResourceAsStream("/it.properties");
             if (inputStream == null) {
                 throw new RuntimeException("it.properties is null");
             }
             properties.load(inputStream);
-            projectBuildDirectory = properties.getProperty("projectBuildDirectory");
-            projectBuildFinalName = properties.getProperty("projectBuildFinalName");
+            projectBuildDirectory = properties
+                    .getProperty("projectBuildDirectory");
+            projectBuildFinalName = properties
+                    .getProperty("projectBuildFinalName");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load properties, e");
         } finally {

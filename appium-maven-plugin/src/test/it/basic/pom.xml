@@ -41,7 +41,7 @@ limitations under the License.
         <profile>
             <id>use-installed-appium</id>
             <properties>
-                <appium.home>../../../../node/npm/node_modules/.bin</appium.home>
+                <appium.home>../../../../node/npm</appium.home>
             </properties>
         </profile>
     </profiles>
