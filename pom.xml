@@ -19,7 +19,7 @@ limitations under the License.
     <artifactId>appium-maven-plugin-parent</artifactId>
     <groupId>com.github.psorobka</groupId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <name>Appium Maven Plugin Parent 1.0</name>
     <description>
@@ -366,6 +366,6 @@ limitations under the License.
         <developerConnection>scm:git:git@github.com:psorobka/appium-maven-plugin.git</developerConnection>
         <connection>scm:git:git@github.com:psorobka/appium-maven-plugin.git</connection>
         <url>https://github.com/psorobka/appium-maven-plugin</url>
-        <tag>HEAD</tag>
+        <tag>appium-maven-plugin-parent-1.1.0</tag>
     </scm>
 </project>
