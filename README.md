@@ -9,7 +9,7 @@ From Appium website:
 Features
 -------------
  - Start and stop Appium server from Maven
- - Automatic download of Appium, using frontend-maven-plugin
+ - Automatic download of Node, NPM and Appium, using [frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin)
  - Fully functional example: Maven Android application, with Appium integration tests running on Android emulator.
  - Support for Appium 1.4.10
 
@@ -33,5 +33,5 @@ Example
 -------------------
 To run example Android project:
  - Using already started Appium and default device connected to ADB: `$ mvn clean verify -Pintegration-test`
- - Using Appium installed in default location (${user.home}/node_modules/.bin) and default device connected to ADB: `$ mvn clean verify -Pstart-and-stop-appium,integration-test`
- - Using Appium installed during Maven build and Android emulator: `$ mvn clean verify -Pinstall-appium,use-installed-appium,start-and-stop-appium,integration-test,start-and-stop-emulator` or `$ mvn clean verify -Dfull-integration-test=true`
+ - Using Appium installed in default location (${user.home}/node_modules/appium) and default device connected to ADB: `$ mvn clean verify -Pstart-and-stop-appium,integration-test`
+ - Using Appium installed during Maven build and Android emulator: `$ mvn clean verify -Pinstall-node-npm-and-appium,use-installed-appium,start-and-stop-emulator,start-and-stop-appium,integration-test` or `$ mvn clean verify -Dfull-integration-test=true`
