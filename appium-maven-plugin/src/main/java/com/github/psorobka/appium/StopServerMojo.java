@@ -32,7 +32,8 @@ import org.zeroturnaround.process.Processes;
 import org.zeroturnaround.process.WindowsProcess;
 
 /**
- *
+ * Mojo for stopping Appium server
+ * 
  * @author Piotr Soróbka <psorobka@gmail.com>
  */
 @Mojo(name = "stop", defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST)

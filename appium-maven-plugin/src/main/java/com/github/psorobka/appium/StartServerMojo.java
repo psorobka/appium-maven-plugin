@@ -28,7 +28,8 @@ import org.zeroturnaround.process.PidUtil;
 import org.zeroturnaround.process.Processes;
 
 /**
- *
+ * Mojo for starting Appium server
+ * 
  * @author Piotr Soróbka <psorobka@gmail.com>
  */
 @Mojo(name = "start", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
