@@ -345,7 +345,7 @@ limitations under the License.
             </build>
         </profile>
         <profile>
-            <id>install-appium</id>
+            <id>install-node-npm-and-appium</id>
             <activation>
                 <property>
                     <name>full-integration-test</name>

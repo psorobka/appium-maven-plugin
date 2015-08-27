@@ -115,7 +115,7 @@ limitations under the License.
             </build>
         </profile>
         <profile>
-            <id>use-installed-appium</id>
+            <id>use-installed-node-and-appium</id>
             <activation>
                 <property>
                     <name>full-integration-test</name>
@@ -128,7 +128,8 @@ limitations under the License.
                             <artifactId>maven-invoker-plugin</artifactId>                       
                             <configuration>
                                 <properties>
-                                    <appium.home>../../../../node/npm</appium.home>
+                                    <appium.home>../../../../node/npm/node_modules/appium</appium.home>
+                                    <node.home>../../../../node</node.home>
                                 </properties>
                             </configuration>
                         </plugin>                        

@@ -73,14 +73,15 @@ limitations under the License.
 
     <profiles>
         <profile>
-            <id>use-installed-appium</id>
+            <id>use-installed-node-and-appium</id>
             <activation>
                 <property>
                     <name>full-integration-test</name>
                 </property>
             </activation>
             <properties>
-                <appium.home>../node/npm</appium.home>
+                <node.home>../node</node.home>
+                <appium.home>../node/npm/node_modules/appium</appium.home>
             </properties>
         </profile>
         <profile>
